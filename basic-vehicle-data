@@ -1,0 +1,5 @@
+#!/bin/bash
+filename=basic-vehicle-data-$(append-date)
+curl -v -H "$(headers)" https://owner-api.teslamotors.com/api/1/vehicles/$(vehicle-id) > $(tesla-working-directory)/logs/$filename
+cat $(tesla-working-directory)/logs/$filename | python -m json.tool
+# echo $filename

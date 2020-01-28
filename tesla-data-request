@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -n $1 ]; then
+  filename=$1-$(append-date)
+  curl -v -H "$(headers)" https://owner-api.teslamotors.com/api/1/vehicles/$(vehicle-id)/data_request/$1 > $(tesla-working-directory)/logs/$filename
+  cat $(tesla-working-directory)/logs/$filename | python -m json.tool
+else
+  echo "Please provide a valid data request"
+fi

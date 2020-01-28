@@ -1,0 +1,2 @@
+#!/bin/bash
+echo -e "Authorization: Bearer $(auth-token)\nUser-Agent: curl TeslaAPIWrapper/1.0\n Accept: application/json"

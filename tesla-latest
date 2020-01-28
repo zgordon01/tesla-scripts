@@ -1,0 +1,5 @@
+#!/bin/bash
+
+latestfile=`ls -t $(tesla-working-directory)/logs | head -n 1`
+
+cat $(tesla-working-directory)/logs/$latestfile | python -m json.tool
