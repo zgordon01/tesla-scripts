@@ -1,13 +1,19 @@
 #!/bin/bash
 
+currentDirectory=$(dirname $BASH_SOURCE[0])
+
 # Creating Directories
 mkdir logs;
 mkdir config;
 
 # Creating config files
-touch config/auth-token;
-touch config/vehicle-id;
+touch $currentDirectory/config/auth-token;
+touch $currentDirectory/config/vehicle-id;
+
+# Populate the files with setup strings
+echo "echo **Add your auth token here**" > $currentDirectory/config/auth-token;
+echo "echo **Add your vehicle id here**" > $currentDirectory/config/vehicle-id;
 
 # Setting as executable
-chmod +x config/auth-token;
-chmod +x config/vehicle-id;
+chmod +x $currentDirectory/config/auth-token;
+chmod +x $currentDirectory/config/vehicle-id;
