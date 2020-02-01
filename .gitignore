@@ -1,7 +1,3 @@
 /logs/
 
-utils/vehicle-id
-
-utils/auth-token
-
-utils/tesla-working-directory
+/config/

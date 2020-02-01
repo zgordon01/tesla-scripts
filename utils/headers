@@ -1,2 +1,5 @@
 #!/bin/bash
-echo -e "Authorization: Bearer $(auth-token)\nUser-Agent: curl TeslaAPIWrapper/1.0\n Accept: application/json"
+
+currentDirectory=$(dirname $BASH_SOURCE[0])
+
+echo -e "Authorization: Bearer $($currentDirectory/../config/auth-token)\nUser-Agent: curl TeslaAPIWrapper/1.0\n Accept: application/json"

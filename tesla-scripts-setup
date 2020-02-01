@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Creating Directories
+mkdir logs;
+mkdir config;
+
+# Creating config files
+touch config/auth-token;
+touch config/vehicle-id;
+
+# Setting as executable
+chmod +x config/auth-token;
+chmod +x config/vehicle-id;

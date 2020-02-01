@@ -1,9 +1,13 @@
 #!/bin/bash
 
 if [ -n $1 ]; then
-  filename=$1-$(append-date)
-  curl -v -H "$(headers)" https://owner-api.teslamotors.com/api/1/vehicles/$(vehicle-id)/data_request/$1 > $(tesla-working-directory)/logs/$filename
-  cat $(tesla-working-directory)/logs/$filename | python -m json.tool
+
+  currentDirectory=$(dirname $BASH_SOURCE[0])
+  filename=$1-$($currentDirectory/utils/append-date)
+
+  curl -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/data_request/$1 > $currentDirectory/logs/$filename
+  cat $currentDirectory/logs/$filename | python -m json.tool
+  
 else
-  echo "Please provide a valid data request"
+  echo "Please provide data request param"
 fi

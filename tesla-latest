@@ -1,5 +1,6 @@
 #!/bin/bash
 
-latestfile=`ls -t $(tesla-working-directory)/logs | head -n 1`
+currentDirectory=$(dirname $BASH_SOURCE[0])
+latestfile=$(ls -t $currentDirectory/logs | head -n 1)
 
-cat $(tesla-working-directory)/logs/$latestfile | python -m json.tool
+cat $currentDirectory/logs/$latestfile | python -m json.tool
