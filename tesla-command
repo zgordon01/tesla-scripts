@@ -1,13 +1,42 @@
 #!/bin/bash
 
-if [ -n $1 ]; then
+supportedBodylessCommands=("honk_horn" "flash_lights" "reset_valet_pin" "door_lock" "door_unlock" "charge_port_door_open" "charge_port_door_close" "charge_start" "charge_stop" "charge_standard" "charge_max_range" "auto_conditioning_start" "auto_conditioning_stop" "media_toggle_playback" "media_next_track" "media_prev_track" "media_next_fav" "media_prev_fav" "media_volume_up" "media_volume_down" "cancel_software_update")
+supportedBodyCommands=("set_charge_limit" "remote_start_drive" "trigger_homelink" "speed_limit_set_limit" "speed_limit_activate" "speed_limit_deactivate" "speed_limit_clear_pin" "set_valet_mode" "actuate_trunk" "window_control" "sun_roof_control" "set_temps" "set_preconditioning_max" "remote_seat_heater_request" "remote_steering_wheel_heater_request" "share")
+supportedCommandString="See supporting documentation here: https://tesla-api.timdorr.com\n\nSupported commands with a request body are:\n${supportedBodyCommands[@]}\n\nSupported commands without a request body are:\n${supportedBodylessCommands[@]}"
+isValidBodylessCommand=false
+isValidBodyCommand=false
 
-  currentDirectory=$(dirname $BASH_SOURCE[0])
-  filename=$1-$($currentDirectory/utils/append-date)
+if [ -n "$1" ]; then
 
-  curl -X POST -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/command/$1 > $currentDirectory/logs/$filename
-  cat $currentDirectory/logs/$filename | python -m json.tool
+  for COMMAND in ${supportedBodylessCommands[@]}
+  do
+    if [ $COMMAND = $1 ]; then
+      isValidBodylessCommand=true
+    fi
+  done
+  for COMMAND in ${supportedBodyCommands[@]}
+  do
+    if [ $COMMAND = $1 ]; then
+      isValidBodyCommand=true
+    fi
+  done
+
+  if $isValidBodylessCommand || ($isValidBodyCommand && [ -n "$2" ]); then
+    currentDirectory=$(dirname $BASH_SOURCE[0])
+    logFileName=$1-$($currentDirectory/utils/append-date)
+
+    #Make the request and log the response
+    if $isValidBodylessCommand; then
+      curl -X POST -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/command/$1 > $currentDirectory/logs/$logFileName
+    else
+      curl -X POST -H "$($currentDirectory/utils/headers)" -d $2 https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/command/$1 > $currentDirectory/logs/$logFileName
+    fi
+    #Print the formatted response
+    cat $currentDirectory/logs/$logFileName | python -m json.tool
+  else
+    echo -e "\"$1\" is not a supported command or requires a request body.\n\n$supportedCommandString"
+  fi
   
 else
-  echo "Please provide a command"
+  echo -e "Please provide a command.\n\n$supportedCommandString"
 fi

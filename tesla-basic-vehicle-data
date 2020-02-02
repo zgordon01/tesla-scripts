@@ -1,8 +1,0 @@
-#!/bin/bash
-
-currentDirectory=$(dirname $BASH_SOURCE[0])
-filename=basic-vehicle-data-$($currentDirectory/utils/append-date)
-
-curl -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/ > $currentDirectory/logs/$filename
-cat $currentDirectory/logs/$filename | python -m json.tool
-

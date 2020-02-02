@@ -1,12 +1,29 @@
 #!/bin/bash
 
-if [ -n $1 ]; then
+supportedCommands=("charge_state" "climate_state" "drive_state" "gui_settings" "vehicle_state" "vehicle_config")
+supportedCommandString="See supporting documentation here: https://tesla-api.timdorr.com\n\nSupported commands are:\n${supportedCommands[@]}"
+isCommandValid=false
 
-  currentDirectory=$(dirname $BASH_SOURCE[0])
-  filename=$1-$($currentDirectory/utils/append-date)
+if [ -n "$1" ]; then
 
-  curl -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/data_request/$1 > $currentDirectory/logs/$filename
-  cat $currentDirectory/logs/$filename | python -m json.tool
+  for COMMAND in ${supportedCommands[@]}
+  do
+    if [ $COMMAND = $1 ]; then
+      isCommandValid=true
+    fi
+  done
+  
+  if $isCommandValid; then
+    currentDirectory=$(dirname $BASH_SOURCE[0])
+    logFileName=$1-$($currentDirectory/utils/append-date)
+
+    #Make the request and log the response
+    curl -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/data_request/$1 > $currentDirectory/logs/$logFileName
+    #Print the formatted response
+    cat $currentDirectory/logs/$logFileName | python -m json.tool
+  else
+    echo -e "\"$1\" is not a supported data request.\n\n$supportedCommandString"
+  fi
   
 else
   echo "Please provide data request param"

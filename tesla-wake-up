@@ -1,7 +1,7 @@
 #!/bin/bash
 
 currentDirectory=$(dirname $BASH_SOURCE[0])
-filename=wake_up-$($currentDirectory/utils/append-date)
+logFileName=wake_up-$($currentDirectory/utils/append-date)
 
-curl -X POST -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/wake_up > $currentDirectory/logs/$filename
-cat $currentDirectory/logs/$filename | python -m json.tool
+curl -X POST -v -H "$($currentDirectory/utils/headers)" https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/wake_up > $currentDirectory/logs/$logFileName
+cat $currentDirectory/logs/$logFileName | python -m json.tool

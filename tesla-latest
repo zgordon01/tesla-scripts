@@ -1,6 +1,0 @@
-#!/bin/bash
-
-currentDirectory=$(dirname $BASH_SOURCE[0])
-latestfile=$(ls -t $currentDirectory/logs | head -n 1)
-
-cat $currentDirectory/logs/$latestfile | python -m json.tool
