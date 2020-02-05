@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "What is your password"?
+read password
+
+
+curl -X POST -H "{User-Agent: curl TeslaAPIWrapper/1.0, Accept: application/json, Content-Type: application/json}" -d  https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/command/$1 > $currentDirectory/logs/$logFileName
