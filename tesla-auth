@@ -1,7 +1,10 @@
 #!/bin/bash
 
+clientID="81527cff06843c8634fdc09e8ac0abefb46ac849f38fe1e431c2ef2106796384"
+clientSecret="c7257eb71a564034f9419ee651c7d0e5f7aa6bfbd18bafb5c5c033b093bb2fa3"
+
 echo "What is your password"?
 read password
 
 
-curl -X POST -H "{User-Agent: curl TeslaAPIWrapper/1.0, Accept: application/json, Content-Type: application/json}" -d  https://owner-api.teslamotors.com/api/1/vehicles/$($currentDirectory/config/vehicle-id)/command/$1 > $currentDirectory/logs/$logFileName
+curl -X POST -H "{User-Agent: \"curl TeslaAPIWrapper/1.0\", Accept: \"application/json\, Content-Type: \"application/json\"}" -d  https://owner-api.teslamotors.com/oauth/token?grant_type=password > $currentDirectory/logs/$logFileName
